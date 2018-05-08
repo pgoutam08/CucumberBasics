@@ -1,19 +1,23 @@
 package Steps;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
+//import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import Base.BaseUtil;
-import Transformation.EmailTransform;
-import Transformation.SalaryCountTransform;
+//import Transformation.EmailTransform;
+//import Transformation.SalaryCountTransform;
 import cucumber.api.DataTable;
-import cucumber.api.Transform;
+//import cucumber.api.Transform;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import junit.framework.Assert;
+import library.Utility;
 import pages.LoginPage;
 
 public class LoginStep extends BaseUtil{
@@ -33,32 +37,17 @@ public class LoginStep extends BaseUtil{
 	}
 
 	
-	
+		
 	@Given("^I navigate to the login page$")
 	public void i_navigate_to_the_login_page() throws Throwable {
 	    
+			
 		System.out.println("Navigate to Login Page");
 		base.webdriver.navigate().to("http://www.executeautomation.com/demosite/Login.html");
-	}
-	
-	/*
-	@And("^I enter the Users email address as Email:([^\"]*)$")
-	public void i_enter_the_Users_email_address_as_Email_admin(@Transform(EmailTransform.class) String email) throws Throwable {
-
-		System.out.println("The User Email ID is: " + email);
-		
-		
+		base.webdriver.manage().window().maximize();
 	}
 	
 	
-	@And("^I verify the count of my salary digits for JMD ([^\\\"]*)$")
-	public void i_verify_the_count_of_my_salary_digits_for_Rs(@Transform(SalaryCountTransform.class) int salary) throws Throwable {
-
-		System.out.println("The count of Salary digits is: " + salary);
-			
-	}
-
-	*/
 	
 	@And("^I enter the following for Login$")
 	public void i_enter_the_username_and_password(DataTable table) throws Throwable {
@@ -113,8 +102,13 @@ public class LoginStep extends BaseUtil{
 		LoginPage page = new LoginPage(base.webdriver);
 		
 		//Wait for the button to load
-		Thread.sleep(3000); // not a good idea to use 
+		//Thread.sleep(3000); // not a good idea to use 
+		
+		
+		//page.ExplicitWait(base.webdriver, "Login"); //Working fine
+		page.ImplicitWait(base.webdriver);
 		page.ClickLogin();
+		
 	}
 
 	@Then("^I should see the userform page$")
@@ -122,9 +116,25 @@ public class LoginStep extends BaseUtil{
 	
 		//System.out.println("Login Successful and Inside UserForm");
 		//System.out.println("The driver is: "+base.StepInfo);
+		LoginPage page = new LoginPage(base.webdriver);
 		
-		Assert.assertEquals(base.webdriver.findElement(By.id("Initial")).isDisplayed(), true);
+		Assert.assertEquals(page.Exist(page.txtInitial), true);
+		
+		
+		//page.Hover(base.webdriver, page.menu);
+		
+		
+		//page.HoverAndClick(base.webdriver, page.lnkHoverSelenium, page.seleWebDriver);
+		
+		//page.GrabScreenShot(base.webdriver);
+		
+		//page.PopupWindow(base.webdriver);
+		
+		Utility.selectDropDown(page.SelectTitle, "Mr.");
+		//if()
+		Utility.captureScreenshot(base.webdriver, "Pop-up window");
 	}
 
+	
 	
 }

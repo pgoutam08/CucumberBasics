@@ -1,13 +1,16 @@
 package Steps;
 
+import java.io.IOException;
+
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+//import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.remote.DesiredCapabilities;
 
 import Base.BaseUtil;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import pages.LoginPage;
 
 public class Hook extends BaseUtil {
 	
@@ -27,26 +30,25 @@ public class Hook extends BaseUtil {
 		System.setProperty("webdriver.chrome.driver", "C:/Automation/chromedriver.exe");
 		base.webdriver = new ChromeDriver();
 		
-		//System.setProperty("webdriver.firefox.driver", "C:/Automation/firefox installer.exe");
-		//System.setProperty("webdriver.gecko.driver","C:/Users/pattargv/AppData/Local/Mozilla Firefox/firefox.exe");
-//		DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-//        capabilities.setCapability("marionette", true);
-//        base.webdriver = new FirefoxDriver(capabilities);
+		
+		//System.setProperty("webdriver.gecko.driver","C:/Automation/firefox.exe");
 		//base.webdriver = new FirefoxDriver();
 		
 		
 	}
 	
 	@After
-	public void TearDownTest(Scenario scenario)
+	public void TearDownTest(Scenario scenario) throws IOException
 	{
+		LoginPage page = new LoginPage(base.webdriver);
 		if(scenario.isFailed())
 		{
 			//take screenshot
+			page.GrabScreenShot(base.webdriver);
 			
 			
 		}
 		System.out.println("Closing the browser");
-		base.webdriver.close();
+		//base.webdriver.close();
 	}
 }
